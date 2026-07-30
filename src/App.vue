@@ -1,6 +1,6 @@
-<!-- https://vuejs.org/tutorial/#step-8-->
+<!-- https://vuejs.org/tutorial/#step-11-->
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 
 
 //ref makes a single reactive value (primitive or object) and can be reassigned
@@ -65,15 +65,50 @@ function removeTodo(todo) {
 }
 // ///////////////////////////////////////
 
+// ///////////////////////////////////////
+const pElementRef = ref(null)
+onMounted(() => {
+  pElementRef.value.textContent = "2026-07-30"
+})
+// ///////////////////////////////////////
+
+// ///////////////////////////////////////
+watch(counter, (newCount) => {
+  // yes, console.log() is a side effect
+  console.log(`new count is: ${newCount}`)
+})
+
+
+const todoId = ref(1)
+const todoData = ref(null)
+
+async function fetchData() {
+  todoData.value = null
+  const res = await fetch(
+    `https://jsonplaceholder.typicode.com/todos/${todoId.value}`
+  )
+  todoData.value = await res.json()
+}
+
+watch(todoId, (newId) => {
+  fetchData()
+})
+
+fetchData()
+// ///////////////////////////////////////
+
 </script>
 
 <template>
   <h1 :class="titleClass">{{ message }}</h1>
+  <!-- ------------------------------------------------------------- -->
   <div>
   <p>Count is: {{ counter.count }}</p>
   <button @click="increment">Count is: {{ count }}</button>
 </div>
+  <!-- ------------------------------------------------------------- -->
 
+  <!-- ------------------------------------------------------------- -->
 <div>
     <input v-model="text" placeholder="Type here">
   <p>Text should appear here: {{ text }}. and end at the dot</p>
@@ -84,7 +119,9 @@ function removeTodo(todo) {
   <h1 v-if="awesome">Vue is awesome!</h1>
   <h1 v-else>Oh no 😢</h1>
   </div>
+  <!-- ------------------------------------------------------------- -->
 
+  <!-- ------------------------------------------------------------- -->
   <div>
     <form @submit.prevent="addTodo">
       <input v-model="newTodo" required placeholder="new todo">
@@ -101,6 +138,21 @@ function removeTodo(todo) {
     {{ hideCompleted ? 'Show all' : 'Hide completed' }}
   </button>
   </div>
+  <!-- ------------------------------------------------------------- -->
+
+  <!-- ------------------------------------------------------------- -->
+  <div>
+      <p ref="pElementRef">Hello</p>
+  </div>
+  <!-- ------------------------------------------------------------- -->
+
+  <!-- ------------------------------------------------------------- -->
+     <p>Todo id: {{ todoId }}</p>
+  <button @click="todoId++" :disabled="!todoData">Fetch next todo</button>
+  <p v-if="!todoData">Loading...</p>
+  <pre v-else>{{ todoData }}</pre>
+  <!-- ------------------------------------------------------------- -->
+
 </template>
 
 <style scope>
