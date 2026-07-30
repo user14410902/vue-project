@@ -1,4 +1,4 @@
-<!-- https://vuejs.org/tutorial/#step-11-->
+<!-- https://vuejs.org/tutorial/#step-13-->
 <script setup>
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 
@@ -97,6 +97,13 @@ watch(todoId, (newId) => {
 fetchData()
 // ///////////////////////////////////////
 
+// ///////////////////////////////////////
+import ChildComp from './ChildComp.vue'
+
+const greeting = ref("Hello from parent 123")
+// ///////////////////////////////////////
+
+
 </script>
 
 <template>
@@ -151,6 +158,10 @@ fetchData()
   <button @click="todoId++" :disabled="!todoData">Fetch next todo</button>
   <p v-if="!todoData">Loading...</p>
   <pre v-else>{{ todoData }}</pre>
+  <!-- ------------------------------------------------------------- -->
+
+  <!-- ------------------------------------------------------------- -->
+   <ChildComp :msg="greeting" />
   <!-- ------------------------------------------------------------- -->
 
 </template>
