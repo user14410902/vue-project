@@ -1,4 +1,4 @@
-<!-- https://vuejs.org/tutorial/#step-13-->
+<!-- https://vuejs.org/tutorial/#step-13 -->
 <script setup>
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 
@@ -100,7 +100,9 @@ fetchData()
 // ///////////////////////////////////////
 import ChildComp from './ChildComp.vue'
 
+const msg = ref("msg from parent in slot")
 const greeting = ref("Hello from parent 123")
+const childMsg = ref('No child msg yet')
 // ///////////////////////////////////////
 
 
@@ -161,7 +163,8 @@ const greeting = ref("Hello from parent 123")
   <!-- ------------------------------------------------------------- -->
 
   <!-- ------------------------------------------------------------- -->
-   <ChildComp :msg="greeting" />
+   <ChildComp @response="(msg) => childMsg = msg" :msg="greeting">some slot content {{ msg }}</ChildComp>
+      <p>{{ childMsg }}</p>
   <!-- ------------------------------------------------------------- -->
 
 </template>
